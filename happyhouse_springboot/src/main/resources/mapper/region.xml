@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.house.model.mapper.RegionMapper">
+
+
+
+	<select id="getDongName" parameterType="String" resultType="String">
+		select dongName
+		from dongcode
+		where dongCode = #{dongcode}
+	</select>
+
+	<select id="getSido" resultMap="sidos">
+		select *
+		from sidocode
+	</select>
+	<select id="getGugun" resultMap="guguns">
+		select *
+		from guguncode
+	</select>
+	<select id="getDong" resultMap="dongs">
+		select *
+		from dongcode
+	</select>
+
+	<select id="getAddress" parameterType="String" resultType="HouseInfoDto">
+		select *
+		from houseinfo
+		where aptCode=#{code}
+		GROUP BY aptCode
+	</select>
+
+	<select id="getGugunName"  parameterType="String" resultType="String">
+		select gugunName from guguncode where gugunCode = #{gugunCode};
+	</select>
+	<select id="detailVo" parameterType="String" resultType="DetailVo">
+		select *
+		from houseinfo as hi, housedeal as hd
+		where aptCode=#{code}
+		and hd.no = #{no}
+	</select>
+	
+	<select id="getApt" parameterType="string" resultMap="apts">
+		select aptCode, aptName 
+		from houseinfo
+		where dongCode like concat(#{dongCode},'%')
+	</select>
+
+	<resultMap type="RegionDto" id="sidos">
+		<result column="sidoCode" property="code"/>
+		<result column="sidoName" property="name"/>
+	</resultMap>
+	<resultMap type="RegionDto" id="guguns">
+		<result column="gugunCode" property="code"/>
+		<result column="gugunName" property="name"/>
+	</resultMap>
+	<resultMap type="RegionDto" id="dongs">
+		<result column="dongCode" property="code"/>
+		<result column="dongName" property="name"/>
+	</resultMap>
+	<resultMap type="HouseInfoDto" id="apts">
+		<result column="aptCode" property="aptCode"/>
+		<result column="aptName" property="aptName"/>
+		<result column="dongCode" property="dongCode"/>
+		<result column="dongName" property="dongName"/>
+		<result column="buildYear" property="buildYear"/>
+		<result column="jibun" property="jibun"/>
+		<result column="lat" property="lat"/>
+		<result column="lng" property="lng"/>
+	</resultMap>
+	
+</mapper>
